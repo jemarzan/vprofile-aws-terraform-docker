@@ -1,0 +1,33 @@
+# ---------------------------------------------------------------------------
+# terraform.tfvars  –  fill in your values before running terraform apply
+# ---------------------------------------------------------------------------
+
+aws_region   = "us-east-1"
+environment  = "dev"
+project_name = "vprofile"
+
+# c7i-flex.large: 2 vCPU (burstable), up to 8 GB RAM, 15% baseline
+# Sufficient for the 5-container vprofile stack in dev/staging.
+# Scale up to c7i.xlarge (4 vCPU / 8 GB fixed) for production.
+instance_type = "c7i-flex.large"
+
+# Ubuntu 22.04 LTS (Jammy) – us-east-1
+# Run: aws ec2 describe-images --owners 099720109477 \
+#        --filters "Name=name,Values=ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*" \
+#                  "Name=state,Values=available" \
+#        --query "sort_by(Images,&CreationDate)[-1].ImageId" --output text
+ami_id = "ami-0fc5d935ebf8bc3bc"
+
+# Path to your SSH public key (the matching private key is used to SSH in)
+public_key_path = "~/.ssh/id_rsa.pub"
+
+# Restrict SSH to your own IP for better security:
+# allowed_ssh_cidr = "YOUR_IP/32"
+allowed_ssh_cidr = "0.0.0.0/0"
+allowed_web_cidr = "0.0.0.0/0"
+
+# Leave empty to use the default VPC and its first public subnet
+vpc_id    = ""
+subnet_id = ""
+
+root_volume_size = 30
